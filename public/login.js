@@ -21,7 +21,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     // Montrer le loader
 
     // Grâce au proxy → ça tape directement ton backend Render
-    const res = await fetch(`https://identizone-backend.onrender.com/api`, {
+    const res = await fetch(`https://identizone-backend.onrender.com/api/${role}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
