@@ -1,0 +1,503 @@
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Super Admin Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div class="dashboard">
+
+    <!-- Loader-->
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+    <!-- Notification-->
+    <div id="toast-container"></div>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2 class="logo">IdentiZone</h2>
+      <ul class="menu">
+        <li><a   onclick="showSection('stats')">📊 Statistiques</a></li>
+        <li><a onclick="showSection('admins')">👨‍💼 Admins</a></li>
+        <li><a onclick="showSection('preadmins')">📋 Pré-Admins</a></li>
+        <li><a onclick="showSection('travailler')">📋 Travailler</a></li>
+        <li><a onclick="showSection('family')">👨‍👩‍👧‍👦 Familles</a></li>
+        <li><a onclick="showSection('utilisateurs')">👤 Utilisateurs</a></li>
+        <li><a onclick="logout()">🚪 Déconnexion</a></li>
+      </ul>
+    </aside>
+
+    <!-- Contenu principal -->
+    <div class="main-content">
+      <header class="topbar">
+        <button onclick="toggleSidebar()" class="toggle-btn">☰</button>
+        <h1>Super Admin Dashboard</h1>
+        <div class="times"><span id="currentDate"></span></div>
+        <div class="user-info">👤 SuperAdmin: <strong><span id="superadminName"></span></strong></div>
+      </header>
+      
+      <!-- Section Statistiques -->
+      <div id="stats" class="section active">
+        <h2>Statistiques Globales</h2>
+        <div class="stats">
+          <div class="stat-card">
+            <h3 id="countSuperadmins"></h3>
+            <p>Super Admins</p>
+          </div>
+          <div class="stat-card">
+            <h3 id="countAdmins"></h3>
+            <p>Admins</p>
+          </div>
+          <div class="stat-card">
+            <h3 id="countPreadmins"></h3>
+            <p>Pré-Admins</p>
+          </div>
+          <div class="stat-card">
+            <h3 id="countTravailleurs"></h3>
+            <p>Travaillleurs</p>
+          </div>
+          <div class="stat-card">
+            <h3 id="countFamilles"></h3>
+            <p>Familles</p>
+          </div>
+          <div class="stat-card">
+            <h3 id="countUtilisateurs"></h3>
+            <p>Utilisateurs</p>
+          </div>
+        </div>
+
+        <!-- Graphiques -->
+         <div class="stats-circle">
+          <canvas id="chartsStats"></canvas>
+         </div>
+      </div>
+      <!-- Section Admins -->
+      <div id="admins" class="section">
+        <h2>Gestion des Admins</h2>
+
+        <button id="btnAddAdmin" class="btn-add">➕ Ajouter Admin</button>
+        <button id="btnPrintAdmin" class="btn-print">🖨 Imprimer Liste</button>
+        <input type="text" id="searchAdmin" placeholder="Rechercher un admin...">
+        <div>Nombre total :<span id="nombreAdmin">0</span></div>
+        <table id="adminTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom d'utilisateur</th>
+              <th>Mot de Passe</th>
+              <th>Nom complet</th>
+              <th>Date de Naissance</th>
+              <th>Numero de Tel</th>
+              <th>Adresse</th>
+              <th>Camp</th>
+              <th>Date Crée</th>
+              <th>Actions</th></tr>
+          </thead>
+          <tbody id="adminTableBody">
+            <tr>
+              <td>1820091</td>
+              <td>Administrateur</td>
+              <td>*********</td>
+              <td>Admin-Admin</td>
+              <td>11/11/2000</td>
+              <td>+243 838784239</td>
+              <td>Lingwala/Itaga/N 69</td>
+              <td>Lufungula</td>
+              <td>11/11/1999</td>
+              <td>
+                <button class="btn-voir">👁</button>
+                <button class="btn-edit">✏️</button>
+                <button class="btn-delete">🗑</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Section Pré-Admins -->
+      <div id="preadmins" class="section">
+        <h2>Gestion des Pré-Admins</h2>
+
+        <input type="text" id="searchPreAdmin" placeholder="Rechercher un pré-admin...">
+        <button id="btnPrintPreAdmin" class="btn-print">🖨 Imprimer Liste</button>
+        <div>Nombre Total :<span id="nombrePreAdmin">0</span></div>
+        <table id="preAdminTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom d'utilisateur</th>
+              <th>Mot de Passe</th>
+              <th>Nom complet</th>
+              <th>Date de Naissance</th>
+              <th>Numero de Tel</th>
+              <th>Adresse</th>
+              <th>Nom Admin</th>
+              <th>Date Crée</th>
+              <th>Actions</th></tr>
+          </thead>
+          <tbody id="preadminTableBody">
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Section Travailler -->
+      <div id="travailler" class="section">
+        <h2>Gestion des Travailler</h2>
+        <button id="btnPrintTra" class="btn-print">🖨 Imprimer Liste</button>
+        <input type="text" id="searchTra" placeholder="Rechercher un travailler...">
+        <div>Nombre Total : <span id="nombreTra">0</span></div>
+        <table id="travailTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nom d'utilisateur</th>
+                <th>Mot de Passe</th>
+                <th>Nom complet</th>
+                <th>Date de Naissance</th>
+                <th>Numero de Tel</th>
+                <th>Adresse</th>
+                <th>Statut</th>
+                <th>Date Crée</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="travailTableBody">
+            </tbody>
+        </table>
+      </div>
+
+      <!-- Section Famille -->
+       <div id="family" class="section">
+        <h2>Gestion des Familles</h2>
+        <button id="btnAddFamily" class="btn-add">➕ Ajouter Famille</button>
+        <button id="btnPrintFamily" class="btn-print">🖨 Imprimer Liste</button>
+        <input type="text" id="searchFamily" placeholder="Rechercher une famille...">
+        <div>Nombre Total : <span id="nombreFamily">0</span></div>
+        <table id="familyTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom complet</th>
+              <th>Nombres de Personne</th>
+              <th>Pere de famille</th>
+              <th>Mere de famille</th>
+              <th>Statut Pere</th>
+              <th>Statut Mere</th>
+              <th>Date Crée</th>
+              <th>Camp</th>
+            </tr>
+          </thead>
+          <tbody id="familyTableBody">
+          </tbody>
+        </table>
+       </div>
+
+      <!-- Section Utilisateurs-->
+       <div id="utilisateurs" class="section">
+        <h2>Gestion des Utilisateurs</h2>
+
+        <input type="text" id="searchUser" placeholder="Rechercher un utilisateur...">
+        <button id="btnPrintUser" class="btn-print">🖨 Imprimer Liste</button>
+        <div>Nombre Total : <span id="nombreUser">0</span></div>
+        <table id="userTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom complet</th>
+              <th>Lieu de naissance</th>
+              <th>Date de Naissance</th>
+              <th>Nationalite</th>
+              <th>Profession</th>
+              <th>Niveau d'étude</th>
+              <th>Numero de Tel</th>
+              <th>Adresse</th>
+              <th>Date Crée</th>
+              <th>Camp</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="userTableBody">
+          </tbody>
+        </table>
+       </div>
+
+           <!-- Modal de confirmation -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeConfirmModal()">&times;</span>
+            <h3 id="confirmTitle">Confirmer l'action</h3>
+            <p id="confirmMessage">Voulez-vous vraiment effectuer cette action ?</p>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeConfirmModal()">Annuler</button>
+                <button class="btn-confirm" id="confirmBtn">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Modal Ajouter Famille-->
+<div id="addFamilyModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeAddFamilyModal()">&times;</span>
+    <h2>Ajouter une Famille</h2>
+    <form id="addFamilyForm">
+      <label for="addFNomComplet">Nom complet</label>
+      <input type="text" id="addFNomComplet" required>
+
+      <button type="submit" class="btn-save">💾 Enregistrer</button>
+    </form>
+  </div>
+</div>
+      <!-- Modal Ajouter Admin-->
+<div id="addAdminModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeAddAdminModal()">&times;</span>
+    <h2>Ajouter un Admin</h2>
+    <form id="addAdminForm">
+      <label for="addUsername">Nom d'utilisateur</label>
+      <input type="text" id="addUsername" name="username" required>
+
+      <label for="addPassword">Mot de passe</label>
+      <input type="password" id="addPassword" name="password" required>
+
+      <label for="addNomComplet">Nom complet</label>
+      <input type="text" id="addNomComplet" name="nom_complet" required>
+
+      <label for="addLieuNaissance">Lieu de naissance</label>
+      <input type="text" id="addLieuNaissance" name="lieu_naissance">
+
+      <label for="addDateNaissance">Date de naissance</label>
+      <input type="date" id="addDateNaissance" name="date_naissance">
+
+      <label for="addTelephone">Numéro de téléphone</label>
+      <input type="text" id="addTelephone" name="numero_tel">
+
+      <label for="addAdresse">Adresse</label>
+      <input type="text" id="addAdresse" name="adresse">
+
+      <label for="addCamp">Camp</label>
+      <input type="text" id="addCamp" name="camp">
+
+      <label for="addPhoto">Photo</label>
+      <input type="file" id="addPhoto" name="photo" accept="image/*">
+
+      <button type="submit" class="btn-save">💾 Enregistrer</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Édition Admin -->
+<div id="editAdminModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeEditAdminModal()">&times;</span>
+    <h2>Modifier Admin</h2>
+    <form id="editAdminForm">
+      <input type="hidden" id="editAdminId">
+
+      <label for="editUsername">Nom d'utilisateur</label>
+      <input type="text" id="editUsername" required>
+
+      <label for="editPassword">Mot de passe</label>
+      <input type="password" id="editPassword">
+
+      <label for="editNomComplet">Nom complet</label>
+      <input type="text" id="editNomComplet" required>
+
+      <label for="editDateNaissance">Date de naissance</label>
+      <input type="date" id="editDateNaissance">
+
+      <label for="editTelephone">Numéro de téléphone</label>
+      <input type="text" id="editTelephone">
+
+      <label for="editAdresse">Adresse</label>
+      <input type="text" id="editAdresse">
+
+      <label for="editPhoto">Photo</label>
+      <input type="file" id="editPhoto" accept="image/*">
+
+      <img src="" alt="" id="previewImgPrecedent" style="width: 100px; height: auto; display: none;">
+
+      <button type="submit" class="btn-save">💾 Enregistrer</button>
+    </form>
+  </div>
+</div>
+
+
+
+      <!-- Modal Voir Admin-->
+      <div id="viewAdminModal" class="modal" style="display:none;">
+        <div class="id-card">
+            <span class="close" onclick="closeViewModal()">&times;</span>
+           
+            <!-- Bandeau supérieur-->
+            <div class="id-header">
+              <h3>REPUBLIQUE DECMOCRATIQUE DU CONGO</h3>
+              <p>Commission Electorale Nationale Indépendante</p>
+              <p><strong>Carte d'Identification</strong></p>
+            </div>
+            <!-- Contenue Principal-->
+            <div class="id-body">
+              <!--Photo-->
+              <div class="id-photo">
+                <img id="viewPhoto" src="" alt="Photo Admin"><br>
+                <p><strong><span id="viewId"></span></strong></p>
+              </div>
+
+              <!--Infos-->
+              <div class="id-info">
+                <p><strong>Username:</strong> <span id="viewUsername"></span></p>
+                <p><strong>Nom complet:</strong> <span id="viewNomComplet"></span></p>
+                <p><strong>Date de naissance:</strong> <span id="viewDateNaissance"></span></p>
+                <p><strong>Numéro de téléphone:</strong> <span id="viewTelephone"></span></p>
+                <p><strong>Adresse:</strong> <span id="viewAdresse"></span></p>
+                <p><strong>Camp:</strong> <span id="viewCamp"></span></p>
+
+                <!-- QR Code -->
+                <div class="id-qr">
+                  <div id="qrcode"></div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Bandeau bas-->
+             <div class="id-footer">
+              <p>CENI - CARTE d'Electeur</p>
+             </div>
+        </div>
+     </div>
+
+     <!-- Modal Voir PreAdmin-->
+      <div id="viewPreAdminModal" class="modal" style="display:none;">
+        <div class="id-card">
+            <span class="close" onclick="closeViewPreModal()">&times;</span>
+            
+            <!-- Bandeau supérieur-->
+             <div class="id-header">
+              <h3>REPUBLIQUE DECMOCRATIQUE DU CONGO</h3>
+              <p>Commission Electorale Nationale Indépendante</p>
+              <p><strong>Carte d'Identification</strong></p>
+             </div>
+
+             <!-- Contenue Principal-->
+             <div class="id-body">
+              <!-- Photo-->
+               <div class="id-photo">
+                 <img id="viewPrePhoto" src="" alt="Photo Admin" style="max-width:120px; border-radius:8px; display: block;">
+                 <p><strong><span id="viewPreId"></span></strong></p>
+               </div>
+
+               <!--Infos-->
+               <div class="id-info">
+                 
+                <p><strong>Username:</strong> <span id="viewPreUsername"></span></p>
+                 <p><strong>Nom complet:</strong> <span id="viewPreNomComplet"></span></p>
+                 <p><strong>Date de naissance:</strong> <span id="viewPreDateNaissance"></span></p>
+                 <p><strong>Numéro de téléphone:</strong> <span id="viewPreTelephone"></span></p>
+                 <p><strong>Adresse:</strong> <span id="viewPreAdresse"></span></p>
+
+                 <!-- QR Code -->
+                 <div class="id-qr">
+                  <div id="qrcodeP" class="qrcode"></div>
+                 </div>
+               </div>
+             </div>
+              <!-- Bandeau bas-->
+             <div class="id-footer">
+              <p>CENI - CARTE d'Electeur</p>
+             </div>
+        </div>
+     </div>
+
+     <!-- Modal Voir Travailler-->
+      <div id="viewTravaillerModal" class="modal" style="display:none;">
+        <div class="id-card">
+            <span class="close" onclick="closeViewTraModal()">&times;</span>
+            
+            <!-- Bandeau supérieur-->
+             <div class="id-header">
+              <h3>REPUBLIQUE DECMOCRATIQUE DU CONGO</h3>
+              <p>Commission Electorale Nationale Indépendante</p>
+              <p><strong>Carte d'Identification</strong></p>
+             </div>
+
+             <!-- Contenue Principal -->
+              <div class="id-body">
+                <!--Photo-->
+                <div class="id-photo">
+                  <img id="viewTraPhoto" src="" alt="Photo Travailler" style="max-width:120px; border-radius:8px; display: block;">
+                  <p><strong><span id="viewTraId"></span></strong></p>
+                </div>
+
+                <!--Contenue Principal-->
+                <div class="id-info">
+
+                  <p><strong>Username:</strong> <span id="viewTraUsername"></span></p>
+                  <p><strong>Nom complet:</strong> <span id="viewTraNomComplet"></span></p>
+                  <p><strong>Date de naissance:</strong> <span id="viewTraDateNaissance"></span></p>
+                  <p><strong>Numéro de téléphone:</strong> <span id="viewTraTelephone"></span></p>
+                  <p><strong>Adresse:</strong> <span id="viewTraAdresse"></span></p>
+
+                  <!-- QR Code-->
+                   <div class="id-qr">
+                    <div id="qrcodeT" class="qrcode"></div>
+                   </div>
+                </div>
+              </div>
+
+              <!-- Bandeau bas-->
+             <div class="id-footer">
+              <p>CENI - CARTE d'Electeur</p>
+             </div>
+        </div>
+     </div>
+
+     <!-- Modal Voir Utilisateur-->
+     <div id="viewUtilisateurModal" class="modal" style="display:none;">
+        <div class="id-card">
+            <span class="close" onclick="closeViewUtilisateurModal()">&times;</span>
+            
+            <!--Bandeau supérieur-->
+            <div class="id-header">
+              <h3>REPUBLIQUE DECMOCRATIQUE DU CONGO</h3>
+              <p>Commission Electorale Nationale Indépendante</p>
+              <p><strong>Carte d'Identification</strong></p>
+            </div>
+
+            <!-- Contenue Principal-->
+             <div class="id-body">
+              <!-- Photo-->
+               <div class="id-photo">
+                 <img id="viewUtilisateurPhoto" src="" alt="Photo Utilisateur" style="max-width:120px; border-radius:8px; display: block;">
+                 <p><strong><span id="viewUtilisateurId"></span></strong></p>
+               </div>
+
+               <!--Infos-->
+               <div class="id-info">
+                 <p><strong>Nom complet:</strong> <span id="viewUtilisateurNomComplet"></span></p>
+                 <p><strong>Date de naissance:</strong> <span id="viewUtilisateurDateNaissance"></span></p>
+                <p><strong>Numéro de téléphone:</strong> <span id="viewUtilisateurTelephone"></span></p>
+                <p><strong>Adresse:</strong> <span id="viewUtilisateurAdresse"></span></p>
+                <p><strong>Sexe : </strong> <span id="viewUtilisateurSexe"></span></p>
+
+                <!--Qr Code-->
+                 <div class="id-qr">
+                  <div id="qrcodeU" class="qrcode"></div>
+                 </div>
+               </div>
+             </div>
+
+             <!-- Bandeau bas-->
+             <div class="id-footer">
+              <p>CENI - CARTE d'Electeur</p>
+             </div>
+        </div>
+     </div>
+
+     
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script src="/assets/js/superadmin.js"></script>
+  <script src="/assets/js/animation.js"></script>
+</body>
+</html>

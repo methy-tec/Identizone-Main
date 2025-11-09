@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Administrateur</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Notification -->
+  <div id="toast-container"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2 class="logo">Identizone</h2>
+    <ul class="menu">
+      <li><a class="active" onclick="showSection('stats')">📊 Statistiques</a></li>
+      <li><a onclick="showSection('preadmins')">👨‍💼 Pré-administrateurs</a></li>
+      <li><a onclick="showSection('travaillers')">🧑‍💼 Travailleurs</a></li>
+      <li><a onclick="showSection('families')">👨‍👩‍👧‍👦 Familles</a></li>
+      <li><a onclick="showSection('utilisateur')">👤 Utilisateurs</a></li>
+      <li><a onclick="showSection('parametre')">⚙ Paramètres</a></li>
+      <li><a onclick="logout()">🚪 Se déconnecter</a></li>
+    </ul>
+  </aside>
+
+  <!-- Contenu principal -->
+  <div class="main-content">
+
+    <!-- Header topbar -->
+    <header class="topbar">
+      <button onclick="toggleSidebar()" class="toggle-btn">☰</button>
+      <h1>Dashboard Administrateur</h1>
+      <div class="time"><span id="currentDate"></span></div>
+      <div class="user-info">👤 Administrateur : <strong><span id="adminName"></span></strong></div>
+    </header>
+
+    <!-- Section Statistiques -->
+    <div id="stats" class="section active">
+        <h2>Statistiques Globales</h2>
+        <div class="stats">
+          <div class="stat-card">
+            <h3 id="countAdmins">1</h3>
+            <p>Admins</p>
+          </div>
+          <div class="stat-card">
+            <h3 id="countPreAdmins"></h3>
+            <p>Pré-Admins</p>
+          </div>
+          <div class="stat-card">
+            <h3 id="countTravailleurs"></h3>
+            <p>Travaillleurs</p>
+          </div>
+          <div class="stat-card">
+            <h3 id="countFamilles"></h3>
+            <p>Familles</p>
+          </div>
+          <div class="stat-card">
+            <h3 id="countUtilisateurs"></h3>
+            <p>Utilisateurs</p>
+          </div>
+        </div>
+
+        <!-- Graphiques -->
+         <div class="stats-circle">
+          <canvas id="chartsStats"></canvas>
+         </div>
+      </div>
+
+    <!-- Section Pré-administrateurs -->
+    <section id="preadmins" class="section">
+      <h2>Pré-administrateurs</h2>
+      <button id="btnAddPreAdmin" class="btn-add">➕ Ajouter Pré-administrateur</button>
+      <button id="btnPrintPreAdmins" class="btn-print">🖨 Imprimer</button>
+      <input type="text" id="searchPreAdmins" placeholder="Rechercher pré-administrateur...">
+      <p><strong>Nombre total : <span id="nombrePreAdmins">0</span></strong></p>
+
+      <div class="table-container">
+        <table id="preadminsTable" class="table">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Nom d'utilisateur</th>
+              <th>Mot de passe</th>
+              <th>Nom complet</th>
+              <th>Date de naissance</th>
+              <th>Téléphone</th>
+              <th>Adresse</th>
+              <th>Date créée</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="preadminsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section Travailleurs -->
+    <section id="travaillers" class="section">
+      <h2>Travailleurs</h2>
+      <button id="btnPrintTra" class="btn-print">🖨 Imprimer</button>
+      <input type="text" id="searchTravaillers" placeholder="Rechercher travailleur...">
+      <p><strong>Nombre total : <span id="travaillerCount">0</span></strong></p>
+
+      <div class="table-container">
+        <table id="travaillersTable" class="table">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Nom d'utilisateur</th>
+              <th>Mot de passe</th>
+              <th>Nom complet</th>
+              <th>Date de naissance</th>
+              <th>Téléphone</th>
+              <th>Adresse</th>
+              <th>Session</th>
+              <th>Date créée</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="travaillersTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section Familles -->
+    <section id="families" class="section">
+      <h2>Familles</h2>
+      <button id="btnAddFamily" class="btn-add">➕ Ajouter</button>
+      <button id="btnPrintFamilies" class="btn-print">🖨 Imprimer</button>
+      <input type="text" id="searchFamily" placeholder="Rechercher famille...">
+      <p><strong>Nombre total : <span id="nombreFamily">0</span></strong></p>
+
+      <div class="table-container">
+        <table id="familiesTable" class="table">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Nom complet</th>
+              <th>Nombres de Personne</th>
+              <th>Pere de famille</th>
+              <th>Mere de famille</th>
+              <th>Statut Pere</th>
+              <th>Statut Mere</th>
+              <th>Date Crée</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="familyTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section Utilisateurs -->
+    <section id="utilisateur" class="section">
+      <h2>Utilisateurs</h2>
+      <button id="btnAddUser" class="btn-add">➕ Ajouter</button>
+      <button id="btnPrintUsers" class="btn-print">🖨 Imprimer</button>
+      <input type="text" id="searchUsers" placeholder="Rechercher utilisateur...">
+      <p><strong>Nombre total : <span id="userCount">0</span></strong></p>
+
+      <div class="table-container">
+        <table id="usersTable" class="table">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Nom complet</th>
+              <th>Date de naissance</th>
+              <th>Lieu de naissance</th>
+              <th>Téléphone</th>
+              <th>Adresse</th>
+              <th>Date de décès</th>
+              <th>Famille</th>
+              <th>Date créée</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="utilisateurBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section Paramètres -->
+    <section id="parametre" class="section">
+      <h2>Paramètres</h2>
+      <p>Configuration du profil administrateur et préférences.</p>
+      <div class="parametre-container">
+        <!-- Formulaire profil -->
+         <form id="formProfilAdmin" enctype="multipart/form-data">
+      <h3>Profil Administrateur</h3>
+
+      <label for="usernameA">Nom d'utilisateur :</label>
+      <input type="text" id="usernameA" name="username" required />
+
+      <label for="nom_completA">Nom complet :</label>
+      <input type="text" id="nom_completA" name="nom_complet" required />
+
+      <label for="numero_telA">Téléphone :</label>
+      <input type="text" id="numero_telA" name="numero_tel" />
+
+      <label for="adresseA">Adresse :</label>
+      <input type="text" id="adresseA" name="adresse" />
+
+    </form>
+
+
+         <!-- Formulaire changement mot de passe-->
+          <form id="formMotDePassedAdmin">
+            <h3>Changement de Mot de Passe</h3>
+            <label for="ancien_password">Ancien Mot de Passe</label>
+            <input type="password" id="ancien_password" name="ancien_password" required>
+
+            <label for="new_password">Nouveau Mot de Passe</label>
+            <input type="password" id="new_password" name="new_password" required>
+
+            <button type="submit" class="btn-save">💾 Changer le mot de passe</button>
+          </form>
+
+      </div>
+    </section>
+
+    <!-- 🔹 Modal : Ajouter PréAdmin -->
+    <div class="modal" id="addPreModal">
+      <div class="modal-content">
+        <span class="close" onclick="closeAddPreModal()">&times;</span>
+        <h2>Ajouter un Pré-Administrateur</h2>
+        <form id="addPreForm">
+          <label>Nom d'utilisateur</label>
+          <input type="text" id="addUsername" name="username" required>
+          <label>Mot de passe</label>
+          <input type="text" id="addPassword" name="password" required>
+          <label>Nom complet</label>
+          <input type="text" id="addNomComplet" name="nom_complet" required>
+          <label>Lieu de naissance</label>
+          <input type="text" id="addLieuNaissance" name="lieu_naissance" required>
+          <label>Date de naissance</label>
+          <input type="date" id="addDateNaissance" name="date_naissance" required>
+          <label>Téléphone</label>
+          <input type="text" id="addTelephone" name="numero_tel" required>
+          <label>Adresse</label>
+          <input type="text" id="addAdresse" name="adresse" required>
+          <label>Photo</label>
+          <input type="file" id="addPhoto" name="photo" accept="image/*">
+          <img id="previewPhoto" style="display:none;max-width:100px;max-height:100px;">
+          <button type="submit" class="btn-save">💾 Ajouter</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal : Ajouter Famille -->
+    <div id="addFamilyModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeAddFamilyModal()">&times;</span>
+        <h2>Ajouter une Famille</h2>
+        <form id="addFamilyForm">
+          <label for="addFNomComplet">Nom complet</label>
+          <input type="text" id="addFNomComplet" name="nom_complet" required>
+
+          <button type="submit" class="btn-save">💾 Enregistrer</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal : Ajouter un utilisateur -->
+    <div id="addUserModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeAddUserModal()">&times;</span>
+        <h2>Ajouter un Utilisateur</h2>
+
+        <form id="addUserForm" enctype="multipart/form-data" class="grid-form">
+      
+        <!-- Ligne 1 -->
+        <div class="form-group">
+          <label for="addFamilyId">Famille</label>
+          <input type="search" name="searchFamilyAdd" placeholder="Recheche famille" id="searchFamilyAdd">
+          <select id="addFamilyId" name="familleId" required></select>
+        </div>
+        <div class="form-group">
+          <label for="addFSexe">Sexe</label>
+          <select id="addFSexe" name="sexe" required>
+            <option value="M">Masculin</option>
+            <option value="F">Féminin</option>
+          </select>
+        </div>
+
+      <!-- Ligne 2 -->
+      <div class="form-group">
+        <label for="addFNom">Nom</label>
+        <input type="text" id="addFNom" name="nom" required>
+      </div>
+      <div class="form-group">
+        <label for="addFPostNom">Post-nom</label>
+        <input type="text" id="addFPostNom" name="postnom">
+      </div>
+
+      <!-- Ligne 3 -->
+      <div class="form-group">
+        <label for="addFPrenom">Prénom</label>
+        <input type="text" id="addFPrenom" name="prenom" required>
+      </div>
+      <div class="form-group">
+        <label for="addFDateNaissance">Date de naissance</label>
+        <input type="date" id="addFDateNaissance" name="date_naissance" required>
+      </div>
+
+      <!-- Ligne 4 -->
+      <div class="form-group">
+        <label for="addFLieuNaissance">Lieu de naissance</label>
+        <input type="text" id="addFLieuNaissance" name="lieu_naissance" required>
+      </div>
+      <div class="form-group">
+        <label for="addFNationalite">Nationalité</label>
+        <input type="text" id="addFNationalite" name="nationalite" required>
+      </div>
+
+      <!-- Ligne 5 -->
+      <div class="form-group">
+        <label for="addFAdresse">Adresse</label>
+        <input type="text" id="addFAdresse" name="adresse" required>
+      </div>
+      <div class="form-group">
+        <label for="addFTelephone">Téléphone</label>
+        <input type="text" id="addFTelephone" name="numero_tel" required>
+      </div>
+
+      <!-- Ligne 6 -->
+      <div class="form-group">
+        <label for="addFProfession">Profession</label>
+        <input type="text" id="addFProfession" name="profession">
+      </div>
+      <div class="form-group">
+        <label for="addFNiveauEtude">Niveau d'étude</label>
+        <input type="text" id="addFNiveauEtude" name="niveau_etude">
+      </div>
+
+      <!-- Ligne 7 -->
+      <div class="form-group full">
+        <label for="addEtatCivil">État civil</label>
+        <select id="addEtatCivil" name="etat_civil">
+          <option value="C">Célibataire</option>
+          <option value="M">Marié(e)</option>
+          <option value="D">Divorcé(e)</option>
+          <option value="V">Veuf(ve)</option>
+        </select>
+      </div>
+
+      <!-- Ligne 8 (Photo) -->
+      <div class="form-group full photo-group">
+        <label for="addFPhoto">Photo</label>
+        <input type="file" id="addFPhoto" name="photo" accept="image/*">
+        <img id="previewFPhoto" style="display:none;max-width:80px;border-radius:8px;">
+      </div>
+
+      <button type="submit" class="btn-save">💾 Enregistrer</button>
+    </form>
+  </div>
+    </div>
+
+
+    <!-- 🔹 Modal : Modifier PréAdmin -->
+    <div id="editPreAdminModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeEditAdminModal()">&times;</span>
+        <h2>Modifier Pré-Admin</h2>
+        <form id="editPreAdminForm">
+          <input type="hidden" id="editPreId">
+          <label>Nom d'utilisateur</label>
+          <input type="text" id="editPreUsername" required>
+          <label>Mot de passe</label>
+          <input type="password" id="editPrePassword">
+          <label>Nom complet</label>
+          <input type="text" id="editPreNomComplet" required>
+          <label>Date de naissance</label>
+          <input type="date" id="editPreDateNaissance">
+          <label>Téléphone</label>
+          <input type="text" id="editPreTelephone">
+          <label>Adresse</label>
+          <input type="text" id="editPreAdresse">
+          <label>Photo</label>
+          <input type="file" id="editPrePhoto" accept="image/*">
+          <img id="previewImgPrecedent" style="width:100px;display:none;">
+          <button type="submit" class="btn-save">💾 Enregistrer</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal : Edit Famille-->
+     <div id="editFamilyModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeAddFamilyModal()">&times;</span>
+        <h2>Modifier Famille</h2>
+        <form id="editFamilyForm">
+          <input type="hidden" id="editFamilyId">
+          <label for="editFNomComplet">Nom complet</label>
+          <input type="text" id="editFNomComplet" name="nom_complet" required>
+
+          <button type="submit" class="btn-save">💾 Enregistrer</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal : Edit Utilisateur --> 
+     <div id="editUserModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeEditUserModal()">&times;</span>
+        <h2>Modifier Utilizsateur</h2>
+
+        <form id="editUserForm" enctype="multipart/form-data" class="grid-form">
+      
+        <input type="hidden" id="editUserId">
+
+        <!-- Ligne 1 -->
+        <div class="form-group">
+
+          <label for="editFSexe">Sexe</label>
+          <select id="editFSexe" name="sexe">
+            <option value="M">Masculin</option>
+            <option value="F">Féminin</option>
+          </select>
+        </div>
+
+      <!-- Ligne 2 -->
+      <div class="form-group">
+        <label for="editFNom">Nom</label>
+        <input type="text" id="editFNom" name="nom" required>
+      </div>
+      <div class="form-group">
+        <label for="editFPostNom">Post-nom</label>
+        <input type="text" id="editFPostNom" name="postnom">
+      </div>
+
+      <!-- Ligne 3 -->
+      <div class="form-group">
+        <label for="editFPrenom">Prénom</label>
+        <input type="text" id="editFPrenom" name="prenom" required>
+      </div>
+      <div class="form-group">
+        <label for="editFDateNaissance">Date de naissance</label>
+        <input type="date" id="editFDateNaissance" name="date_naissance" required>
+      </div>
+
+      <!-- Ligne 4 -->
+      <div class="form-group">
+        <label for="editFLieuNaissance">Lieu de naissance</label>
+        <input type="text" id="editFLieuNaissance" name="lieu_naissance" required>
+      </div>
+      <div class="form-group">
+        <label for="editFNationalite">Nationalité</label>
+        <input type="text" id="editFNationalite" name="nationalite" required>
+      </div>
+
+      <!-- Ligne 5 -->
+      <div class="form-group">
+        <label for="editFAdresse">Adresse</label>
+        <input type="text" id="editFAdresse" name="adresse" required>
+      </div>
+      <div class="form-group">
+        <label for="editFTelephone">Téléphone</label>
+        <input type="text" id="editFTelephone" name="numero_tel" required>
+      </div>
+
+      <!-- Ligne 6 -->
+      <div class="form-group">
+        <label for="editFProfession">Profession</label>
+        <input type="text" id="editFProfession" name="profession">
+      </div>
+      <div class="form-group">
+        <label for="editFNiveauEtude">Niveau d'étude</label>
+        <input type="text" id="editFNiveauEtude" name="niveau_etude">
+      </div>
+
+      <!-- Ligne 7 -->
+      <div class="form-group full">
+        <label for="editEtatCivil">État civil</label>
+        <select id="editEtatCivil" name="etat_civil">
+          <option value="C">Célibataire</option>
+          <option value="M">Marié(e)</option>
+          <option value="D">Divorcé(e)</option>
+          <option value="V">Veuf(ve)</option>
+        </select>
+      </div>
+
+      <!-- Ligne 8 (Photo) -->
+      <div class="form-group full photo-group">
+        <label for="editFPhoto">Photo</label>
+        <input type="file" id="editFPhoto" name="photo" accept="image/*">
+        <img src="" id="previewFPhoto" style="display:none;max-width:80px;border-radius:8px;">
+      </div>
+
+      <button type="submit" class="btn-save">💾 Enregistrer</button>
+    </form>
+     </div>
+    </div>
+
+    <!-- Modal Voir PreAdmin--> 
+     <div id="viewPreAdminModal" class="modal" style="display:none;"> 
+        <div class="id-card"> 
+            <span class="close" onclick="closeViewPreModal()">&times;</span> 
+            
+            <!-- Bandeau supérieur--> 
+            <div class="id-header"> 
+                <h3>REPUBLIQUE DECMOCRATIQUE DU CONGO</h3> 
+                <p>Commission Electorale Nationale Indépendante</p> 
+                <p><strong>Carte d'Identification</strong></p> 
+            </div> 
+            <!-- Contenue Principal--> 
+            <div class="id-body"> 
+                <!-- Photo--> 
+                <div class="id-photo"> 
+                    <img id="viewPrePhoto" src="" alt="Photo Admin" style="max-width:120px; border-radius:8px; display: block;"> 
+                    <p><strong><span id="viewPreId"></span></strong></p> 
+                </div> 
+                <!--Infos--> 
+                <div class="id-info"> 
+                    <p><strong>Nom complet:</strong> <span id="viewPreNomComplet"></span></p> 
+                    <p><strong>Date de naissance:</strong> <span id="viewPreDateNaissance"></span></p> 
+                    <p><strong>Numéro de téléphone:</strong> <span id="viewPreTelephone"></span></p> 
+                    <p><strong>Adresse:</strong> <span id="viewPreAdresse"></span></p> 
+                    
+                    <!-- QR Code --> 
+                    <div class="id-qr"> 
+                        <div id="qrcodeP" class="qrcode"></div> 
+                    </div> 
+                </div> 
+            </div> 
+            <!-- Bandeau bas--> 
+             <div class="id-footer"> 
+                <p>CENI - CARTE d'Electeur</p> 
+            </div> 
+        </div> 
+    </div>
+
+
+    <!-- Modal Voir Travailler--> 
+     <div id="viewTraModal" class="modal" style="display:none;"> 
+        <div class="id-card"> 
+            <span class="close" onclick="closeViewTraModal()">&times;</span> 
+            
+            <!-- Bandeau supérieur--> 
+            <div class="id-header"> 
+                <h3>REPUBLIQUE DECMOCRATIQUE DU CONGO</h3> 
+                <p>Commission Electorale Nationale Indépendante</p> 
+                <p><strong>Carte d'Identification</strong></p> 
+            </div> 
+            <!-- Contenue Principal--> 
+            <div class="id-body"> 
+                <!-- Photo--> 
+                <div class="id-photo"> 
+                    <img id="viewTraPhoto" src="" alt="Photo PreAdmin" style="max-width:120px; border-radius:8px; display: block;"> 
+                    <p><strong><span id="viewTraId"></span></strong></p> 
+                </div> 
+                <!--Infos--> 
+                <div class="id-info"> 
+                    <p><strong>Nom complet:</strong> <span id="viewTraNomComplet"></span></p> 
+                    <p><strong>Date de naissance:</strong> <span id="viewTraDateNaissance"></span></p> 
+                    <p><strong>Numéro de téléphone:</strong> <span id="viewTraTelephone"></span></p> 
+                    <p><strong>Adresse:</strong> <span id="viewTraAdresse"></span></p> 
+                    
+                    <!-- QR Code --> 
+                    <div class="id-qr"> 
+                        <div id="qrcodeT" class="qrcode"></div> 
+                    </div> 
+                </div> 
+            </div> 
+            <!-- Bandeau bas--> 
+             <div class="id-footer"> 
+                <p>CENI - CARTE d'Electeur</p> 
+            </div> 
+        </div> 
+    </div>
+
+    <!-- Modal Voir Utilisateur--> 
+     <div id="viewUserModal" class="modal" style="display:none;"> 
+        <div class="id-card"> 
+            <span class="close" onclick="closeViewUserModal()">&times;</span> 
+            
+            <!-- Bandeau supérieur--> 
+            <div class="id-header"> 
+                <h3>REPUBLIQUE DECMOCRATIQUE DU CONGO</h3> 
+                <p>Commission Electorale Nationale Indépendante</p> 
+                <p><strong>Carte d'Identification</strong></p> 
+            </div> 
+            <!-- Contenue Principal--> 
+            <div class="id-body"> 
+                <!-- Photo--> 
+                <div class="id-photo"> 
+                    <img id="viewUserPhoto" src="" alt="Photo Utilisateur" style="max-width:120px; border-radius:8px; display: block;"> 
+                    <p><strong><span id="viewUserId"></span></strong></p> 
+                </div> 
+                <!--Infos--> 
+                <div class="id-info"> 
+                    <p><strong>Nom complet:</strong> <span id="viewUserNameComplet"></span></p> 
+                    <p><strong>Date de naissance:</strong> <span id="viewUserDateNaissance"></span></p> 
+                    <p><strong>Lieu de naissance:</strong> <span id="viewUserLieuNaissance"></span></p> 
+                    <p><strong>Numéro de téléphone:</strong> <span id="viewUserTelephone"></span></p> 
+                    <p><strong>Adresse:</strong> <span id="viewUserAdresse"></span></p> 
+                    <p><strong>Famille:</strong> <span id="viewUserFamille"></span></p>
+
+                    <!-- QR Code --> 
+                    <div class="id-qr"> 
+                        <div id="qrcodeU" class="qrcode"></div> 
+                    </div> 
+                </div> 
+            </div> 
+            <!-- Bandeau bas--> 
+             <div class="id-footer"> 
+                <p>CENI - CARTE d'Electeur</p> 
+            </div> 
+        </div> 
+    </div>
+
+    <!-- Modal de confirmation -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeConfirmModal()">&times;</span>
+            <h3 id="confirmTitle">Confirmer l'action</h3>
+            <p id="confirmMessage">Voulez-vous vraiment effectuer cette action ?</p>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeConfirmModal()">Annuler</button>
+                <button class="btn-confirm" id="confirmBtn">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Déclarer Décès -->
+<div id="modalDeces" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="fermerModalDeces()">&times;</span>
+    <h2>Déclarer un décès</h2>
+
+    <form id="formDeces">
+      <input type="hidden" id="decesUserId">
+      
+      <label for="dateDeces">Date du décès :</label>
+      <input type="date" id="dateDeces" name="date_deces" required>
+
+      <button type="submit" class="btn-confirm">Confirmer</button>
+    </form>
+  </div>
+</div>
+
+
+  </div> <!-- Fin du main-content -->
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="../assets/js/animationAdmin.js"></script>
+  <script src="../assets/js/admin.js"></script>
+
+</body>
+</html>
