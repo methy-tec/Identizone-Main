@@ -121,7 +121,7 @@ function hideLoader(){
 
 }
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://identizone-backend.onrender.com/api";
 
 async function refreshAccessToken() {
   const refreshToken = localStorage.getItem("refreshToken");

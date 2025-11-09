@@ -4,7 +4,7 @@ const AdminName = localStorage.getItem("Name");
 const role = localStorage.getItem("role");
 
 //Recuperation le nom du backend identizone.onrender.com/api
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://identizone-backend.onrender.com/api";
 
 // Récupérer la liste
 let preadmins = [];
