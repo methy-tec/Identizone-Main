@@ -7,7 +7,7 @@ const familyNom = localStorage.getItem("selectedFamilleNom");
 let users = [];
 
 // Recuperation le nom du backend
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://identizone-backend.onrender.com/api";
 
 //Verifie si le token est presents
 document.addEventListener("DOMContentLoaded", async () => {
