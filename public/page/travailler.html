@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Travailleur</title>
+  <link rel="stylesheet" href="./file/style.css">
+</head>
+<body>
+
+  <!-- Contenu principal -->
+  <div class="main-content">
+
+    <!-- Header topbar -->
+    <header class="topbar">
+      <h1>Dashboard Travailleur</h1>
+      <div class="user-info">👤 : <strong><span id="TraName"></span></strong> || <strong>Le <span id="currentDate"></span></strong> </div>
+      <button id="btnLogout" class="btn-logout" onclick="logout()">🚪 Déconnexion</button>
+    </header>
+
+    <!-- Section Famille -->
+    <section id="famille" class="section">
+      <h2>Liste de Famille</h2>
+      
+      <p class="total-family"><strong>Nombre total : <span id="nombreFamilles">0</span></strong> <button id="btnAddFamily" class="btn-add" onclick="openModal()">➕ Ajouter Famille</button></p>
+
+      <p class="search"><input type="search" name="searchFamily" id="searchFamily" placeholder="Rechercher une famille"></p>
+      <div id="familleListe"></div>
+    </section>
+
+    <!-- Modal : Ajouter Famille -->
+    <div id="addFamilyModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">X</span>
+        <h2>Ajouter une Famille</h2>
+        <form id="addFamilyForm">
+          <label for="addFNomComplet">Nom complet</label>
+          <input type="text" id="familleName" name="nom_complet" required>
+
+          <button type="submit" class="btn-save">💾 Enregistrer</button>
+        </form>
+      </div>
+    </div>
+
+  </div> <!-- Fin du main-content -->
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script src="../assets/js/travailler.js"></script>
+</body>
+</html>
