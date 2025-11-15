@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Famille - Enregistrement des Habitants</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="famille.css">
+</head>
+<body>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Notification -->
+  <div id="toast-container"></div>  
+
+  <!-- Contenue principal -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <h1>Dashboard Travailleur</h1>
+      <div class="user-info">👤 : <strong><span id="TraName"></span></strong> || <strong>Le <span id="currentDate"></span></strong> </div>
+      <button class="btn-open" onclick="retour()">⬅ Retour</button> || <button id="btnLogout" class="btn-logout" onclick="logout()">🚪 Déconnexion</button>
+    </header>
+
+    <!-- Section Liste des habitants -->
+    <section id="User" class="section">
+      <h2>Liste des Personne</h2>
+      <p>Famille : <span id="familleNom">...</span></p>
+
+      <p class="total-family"><strong>Nombre total : <span id="nombreUsers">0</span></strong> <button id="btnAddUser" class="btn-add" onclick="openUserModal()">➕ Ajouter Personne</button></p>
+
+      <p class="search-family"><input type="search" name="searchUser" id="searchUser" placeholder="Rechercher une personne"></p>
+
+      <div id="userListe"></div>
+    </section>
+
+    <div id="addUserModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeAddUserModal()">&times;</span>
+        <h2>Enregistrement d'une Personne</h2>
+
+        <form id="addUserForm" enctype="multipart/form-data">
+      
+    <!-- Partie 1 -->
+    <div class="form-step" id="step-1">
+    <p>Partie 1 : Informations Personnelles</p>
+    <input type="hidden" name="familleId" id="addFamilleId">
+
+    <label>Nom</label>
+    <input type="text" id="addUNom" name="nom" required><br/>
+
+    <label>Post-nom</label>
+    <input type="text" id="addFPostNom" name="postnom" required><br/>
+
+    <label>Prénom</label>
+    <input type="text" id="addUPrenom" name="prenom" required><br/>
+
+    <label>Lieu de naissance</label>
+    <input type="text" id="addULieuNaissance" name="lieu_naissance" required><br/>
+
+    <label>Date de naissance</label>
+    <input type="date" id="addUDateNaissance" name="date_naissance" required><br/>
+
+    <label>Sexe</label>
+    <select id="addUSexe" name="sexe" required>
+      <option value="" disabled selected>-- Choisir le sexe --</option>
+      <option value="M">Masculin</option>
+      <option value="F">Féminin</option>
+    </select><br/><br/>
+
+    <button type="button" class="btn-next">Suivant ➡️</button>
+    </div>
+
+  <!-- Partie 2 -->
+    <div class="form-step" id="step-2" style="display:none;">
+      <p>Partie 2 : Informations Complémentaires</p>
+
+      <label>Nationalité</label>
+      <input type="text" id="addUNationalite" name="nationalite" required><br/>
+
+      <label>Téléphone</label>
+      <input type="text" id="addUTelephone" name="numero_tel" required><br/>
+
+      <label>Adresse</label>
+      <input type="text" id="addUAdresse" name="adresse" required><br/>
+
+      <label>Niveau d'étude</label>
+      <input type="text" id="addUNiveauEtude" name="niveau_etude"><br/>
+
+      <label>Profession</label>
+      <input type="text" id="addUProfession" name="profession"><br/>
+
+      <label>État civil</label>
+      <select id="addEtatCivil" name="etat_civil" required>
+        <option value="C">Célibataire</option>
+        <option value="M">Marié(e)</option>
+        <option value="D">Divorcé(e)</option>
+        <option value="V">Veuf(ve)</option>
+      </select><br/><br/>
+
+      <button type="button" class="btn-prev">⬅️ Précédent</button>
+      <button type="button" class="btn-next">Suivant ➡️</button>
+    </div>
+
+    <!-- Partie 3 -->
+    <div class="form-step" id="step-3" style="display:none;">
+      <label>Photo</label>
+      <input type="file" id="addUPhoto" name="photo" accept="image/*">
+      <img id="previewUPhoto" style="display:none;max-width:80px;border-radius:8px;">
+
+      <button type="button" class="btn-prev">⬅️ Précédent</button>
+      <button type="submit" class="btn-save">💾 Enregistrer</button>
+    </div>
+
+  </form>
+
+  </div>
+    </div>
+
+  </div>
+  <script src="animationFamile.js"></script>
+  <script src="famille.js"></script>
+</body>
+</html>

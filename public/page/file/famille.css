@@ -1,0 +1,79 @@
+.search-family{
+  margin-top: 20px;
+  margin-left: 10px;
+}
+#addUserForm {
+  width: 90%;
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+
+  display: flex;
+  flex-direction: column;    /* 🔥 Force tout en colonne */
+  align-items: stretch;  
+}
+/* ----- Titres des parties ----- */
+.form-step p {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+
+.form-step {
+  display: none;
+  animation: fade .3s ease-in-out;
+  flex-direction: column;  
+}
+
+/* Petite animation au changement d’étape */
+@keyframes fade {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ----- Boutons ----- */
+.btn-next,
+.btn-prev,
+.btn-save {
+  width: 48%;
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  transition: background .2s ease;
+}
+
+.btn-next {
+  background: #007bff;
+}
+
+.btn-next:hover {
+  background: #0064cc;
+}
+
+.btn-prev {
+  background: #6c757d;
+}
+
+.btn-prev:hover {
+  background: #545b62;
+}
+
+.btn-save {
+  width: 100%;
+  background: #28a745;
+  margin-top: 10px;
+}
+
+.btn-save:hover {
+  background: #1e7e34;
+}
+
