@@ -754,7 +754,7 @@ fetchTravaillers();
 // Partie de la famille
 async function fetchFamilles() {
   try {
-    const res = await fetchWithAuth(`${API_URL}/familles/list`});
+    const res = await fetchWithAuth(`${API_URL}/familles/list`);
     if (!res.ok) throw new Error("Erreur d'accès: " + res.status);
 
     familles = await res.json();
